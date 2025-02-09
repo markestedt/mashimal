@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mashimal</title>
+    <!-- Pico.css -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <!-- HTMX -->
+    <script src="https://unpkg.com/htmx.org@2.0.4"
+        integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+"
+        crossorigin="anonymous"></script>
+    <style>
+        .result-image {
+            display: block;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+    <main class="container">
+        <section>
+            <header>
+                <hgroup>
+                    <h1>Mashimal</h1>
+                    <p>Dive into a world of quirky animal hybrids with Mashimal! Choose two animals, and we’ll do the
+                        rest—mixing them into one fantastic creature that’s as fun and wild as your imagination.</p>
+                </hgroup>
+            </header>
+
+            <form hx-post="/generate" hx-target="#result-container" hx-swap="innerHTML" hx-indicator=".loading">
+                <div class="grid">
+                    <select name="animal1" required>
+                        <option value="">Select first animal</option>
+                        {{range .Animals}}
+                        <option value="{{.}}" {{if eq . $.Animal1}}selected{{end}}>{{.}}</option>
+                        {{end}}
+                    </select>
+                    <select name="animal2" required>
+                        <option value="">Select second animal</option>
+                        {{range .Animals}}
+                        <option value="{{.}}" {{if eq . $.Animal2}}selected{{end}}>{{.}}</option>
+                        {{end}}
+                    </select>
+                </div>
+                <button type="submit">Mash!</button>
+                <div class="loading htmx-indicator" role="status">
+                    <small>Performing some questionable research... Please wait...</small>
+                    <progress></progress>
+                </div>
+            </form>
+
+            <div id="result-container">
+                {{block "result" .}}
+                {{if .Error}}
+                <div class="error">{{.Error}}</div>
+                {{end}}
+
+                {{if .ImageData}}
+                <section>
+                    <img id="resultImage" alt="Animal Mashup of {{.Animal1}} and {{.Animal2}}" class="result-image">
+                    <script>
+                        document.getElementById('resultImage').src = "{{.ImageData}}";
+                    </script>
+                </section>
+                {{end}}
+                {{end}}
+            </div>
+        </section>
+    </main>
+</body>
+
+</html>
