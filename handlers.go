@@ -35,22 +35,14 @@ func HandleGenerate(w http.ResponseWriter, r *http.Request) {
 	animal1 := r.FormValue("animal1")
 	animal2 := r.FormValue("animal2")
 
-	prompt2 := fmt.Sprintf(`Create a realistic hybrid animal that combines %s and %s.
-	The creature is a single animal, blending the features of the two species seamlessly.
-	The create only has one head and one face.
-	It looks cute and friendly, with big expressive eyes.
-	The hybrid has the same texture all over the body, and that texture is a blend of the two species.
-	The hybrid is design to live in a single ecological niche (land, water or air).
-	The hybrid is the only subject in the image.
-	The hybrid is set in a whimsicall, realistic environment fitting of its ecological niche.`, animal1, animal2)
-
-	prompt := "My prompt contains all details dont add anything else. Here is the prompt: \n"
-
-	prompt += fmt.Sprintf(`A highly detailed, ultra-realistic hybrid animal that combines a %s and a %s. The creature is a single, fully integrated and biologically plausible animal, blending the most iconic traits of both species into a seamless design. It has a cute, friendly appearance with expressive eyes and balanced body proportions. The textures—fur, feathers, scales, or skin—transition naturally between the two animals.
-
-The hybrid fits a single ecological niche (land, water, or air), adapting traits from both animals to suit this niche. The hybrid is the only subject in the image, with no text or additional animals. It is set in a fitting natural environment, such as a forest, desert, ocean, or savanna, with soft, warm lighting that enhances its charm and realism. The animal should NEVER have more than one head.`, animal1, animal2)
-
-	imageData, contentType, err := generateImage(prompt2)
+	prompt := fmt.Sprintf(`Create a realistic image of a hybrid animal that combines %[1]s and %[2]s. The animal is referred to as The Hybrid from here on.
+	The Hybrid is a single animal, blending the defining anatomy of %[1]s with the texture and surface of %[2]s.
+	The Hybrid only has one head and one face.
+	The Hybrid looks cute and friendly, with big expressive eyes.
+	The Hybrid is designed to live in a single ecological niche (land, water or air).
+	The Hybrid is the one and only subject in the image.
+	The background is a whimsicall, realistic environment fitting of its ecological niche.`, animal1, animal2)
+	imageData, contentType, err := generateImage(prompt)
 
 	data := PageData{
 		Animals: animals,
