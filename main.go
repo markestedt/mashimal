@@ -20,8 +20,8 @@ func main() {
 	http.HandleFunc("/", HandleHome)
 	http.HandleFunc("/generate", HandleGenerate)
 
-	log.Println("Server starting on :8080...")
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Println("Server starting on :9393...")
+	log.Fatal(http.ListenAndServe(":9393", nil))
 }
 
 func generateImage(prompt string) (string, string, error) {
